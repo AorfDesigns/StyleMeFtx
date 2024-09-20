@@ -1,6 +1,5 @@
 
-import SignupForm from "./signup/_components/SignUp";
-import SignUp from "./signup/_components/SignUp";
+import SignupForm from "./signin/_components/SignIn";
 
 export default function Home() {
   return (

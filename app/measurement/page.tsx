@@ -1,10 +1,10 @@
 import React from 'react'
-import SignupWithGoogle from './_components/Signup'
+import MeasurementForm from './_components/MeasurementForm'
 
 const page = () => {
   return (
     <div>
-        <SignupWithGoogle />
+        <MeasurementForm />
     </div>
   )
 }

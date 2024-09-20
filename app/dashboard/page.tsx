@@ -1,10 +1,10 @@
 import React from 'react'
-import SignupWithGoogle from './_components/Signup'
+import Dashboard from './_components/DashBoard'
 
 const page = () => {
   return (
     <div>
-        <SignupWithGoogle />
+        <Dashboard />
     </div>
   )
 }
