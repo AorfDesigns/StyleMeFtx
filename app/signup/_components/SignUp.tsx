@@ -7,7 +7,7 @@ import { signInWithPopup } from 'firebase/auth'; // For signing in with Google
 import { doc, setDoc } from 'firebase/firestore'; // For saving user data in Firestore
 import { useRouter } from 'next/navigation'; // For route navigation
 
-const SignupWithGoogle: FC = () => {
+const Signup: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -55,4 +55,4 @@ const SignupWithGoogle: FC = () => {
   );
 };
 
-export default SignupWithGoogle;
+export default Signup;
