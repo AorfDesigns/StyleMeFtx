@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../firebase/firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { Timestamp } from 'firebase/firestore'; // Import Timestamp
+import { Timestamp } from 'firebase/firestore';
 
 interface User {
   id: string;
   username: string;
+  status: 'online' | 'offline'; // Add user status
 }
 
 interface Message {
@@ -14,7 +15,7 @@ interface Message {
   senderId: string;
   recipientId: string;
   text: string;
-  createdAt: Timestamp; // Use Timestamp for Firestore timestamp
+  createdAt: Timestamp;
 }
 
 const MessageComponent: React.FC = () => {
@@ -25,7 +26,6 @@ const MessageComponent: React.FC = () => {
 
   const currentUserId = 'your_user_id'; // Change this to the actual user ID
 
-  // Fetch Users from Firestore
   const fetchUsers = async () => {
     try {
       const usersSnapshot = await getDocs(collection(db, 'users'));
@@ -35,11 +35,10 @@ const MessageComponent: React.FC = () => {
       })) as User[];
       setUsers(usersData);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error('Error fetching users:', error);
     }
   };
 
-  // Fetch Messages from Firestore
   const fetchMessages = async () => {
     try {
       const messagesSnapshot = await getDocs(collection(db, 'messages'));
@@ -49,11 +48,10 @@ const MessageComponent: React.FC = () => {
       })) as Message[];
       setMessages(messagesData);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error('Error fetching messages:', error);
     }
   };
 
-  // Fetch data when component mounts
   useEffect(() => {
     fetchUsers();
     fetchMessages();
@@ -70,44 +68,51 @@ const MessageComponent: React.FC = () => {
       senderId: currentUserId,
       recipientId: selectedUserId,
       text: newMessage,
-      createdAt: Timestamp.now(), // Use Firestore's Timestamp
+      createdAt: Timestamp.now(),
     };
 
     try {
       await addDoc(collection(db, 'messages'), messageData);
       setNewMessage('');
-      fetchMessages(); // Refresh messages after sending
+      fetchMessages();
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen bg-gray-50">
       {/* User List */}
-      <div className="w-1/3 border-r p-4">
-        <h2 className="text-lg font-bold mb-4">Users</h2>
-        <ul className="space-y-2">
+      <div className="w-1/3 border-r p-4 bg-white shadow-md">
+        <h2 className="text-lg font-bold mb-4">Designers & Manufacturers</h2>
+        <ul className="space-y-4">
           {users.map((user) => (
             <li
               key={user.id}
-              className={`cursor-pointer hover:bg-gray-200 p-2 rounded ${
-                selectedUserId === user.id ? 'bg-gray-300' : ''
+              className={`flex items-center cursor-pointer p-2 rounded hover:bg-gray-100 transition ${
+                selectedUserId === user.id ? 'bg-gray-200' : ''
               }`}
               onClick={() => handleUserSelect(user.id)}
             >
-              <span className="text-black">{user.username}</span>
+              {/* Status Indicator */}
+              <span
+                className={`w-3 h-3 mr-2 rounded-full ${
+                  user.status === 'online' ? 'bg-green-500' : 'bg-red-500'
+                }`}
+                title={user.status === 'online' ? 'Online' : 'Offline'}
+              ></span>
+              <span className="text-gray-700">{user.username}</span>
             </li>
           ))}
         </ul>
       </div>
 
       {/* Messages Conversation */}
-      <div className="w-2/3 p-4">
-        <h2 className="text-lg font-bold mb-4">Messages</h2>
-        <div className="bg-white border rounded-md p-4 h-full">
+      <div className="w-2/3 p-4 flex flex-col">
+        <h2 className="text-lg font-bold mb-4">Chat</h2>
+        <div className="flex-grow bg-white border rounded-md p-4 overflow-y-auto">
           {selectedUserId ? (
-            <div className="space-y-2">
+            <div className="space-y-3">
               {messages
                 .filter(
                   (message) =>
@@ -117,18 +122,20 @@ const MessageComponent: React.FC = () => {
                 .map((message) => (
                   <div
                     key={message.id}
-                    className={`${
-                      message.senderId === currentUserId ? 'text-right' : 'text-left'
+                    className={`flex ${
+                      message.senderId === currentUserId ? 'justify-end' : 'justify-start'
                     }`}
                   >
                     <div
-                      className={`inline-block p-2 rounded-lg ${
-                        message.senderId === currentUserId ? 'bg-blue-200 text-black' : 'bg-gray-200 text-black'
+                      className={`inline-block max-w-xs p-3 rounded-lg ${
+                        message.senderId === currentUserId
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-gray-700'
                       }`}
                     >
-                      {message.text}
-                      <span className="block text-xs text-gray-600">
-                        {message.createdAt.toDate().toLocaleString()} {/* Convert Timestamp to Date */}
+                      <p>{message.text}</p>
+                      <span className="block text-xs text-gray-500 mt-1">
+                        {message.createdAt.toDate().toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -138,22 +145,25 @@ const MessageComponent: React.FC = () => {
             <p className="text-gray-500">Select a user to view messages.</p>
           )}
         </div>
+
         {/* Message Input */}
-        <div className="mt-4">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="border rounded w-full p-2"
-          />
-          <button
-            onClick={handleSendMessage}
-            className="mt-2 bg-blue-500 text-white p-2 rounded"
-          >
-            Send
-          </button>
-        </div>
+        {selectedUserId && (
+          <div className="mt-4 flex items-center">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-grow border rounded-l p-2 focus:outline-none"
+            />
+            <button
+              onClick={handleSendMessage}
+              className="bg-blue-500 text-white p-2 rounded-r"
+            >
+              Send
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
