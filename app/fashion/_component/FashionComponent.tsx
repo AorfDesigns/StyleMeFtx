@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import VideoPlayer from './VideoPlayer';
+
 
 // Define the type for the API response based on its structure
 interface PinterestVideo {
