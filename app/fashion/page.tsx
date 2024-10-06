@@ -1,11 +1,12 @@
 import React from 'react'
-import MeasurementForm from './_components/MeasurementForm'
+import FashionAnalysis from './_component/FashionComponent'
 import AppLayout from '../Applayout'
+
 
 const page = () => {
   return (
     <AppLayout>
-        <MeasurementForm />
+        <FashionAnalysis />
     </AppLayout>
   )
 }
