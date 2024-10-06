@@ -1,15 +1,19 @@
-// FashionAnalysis.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
+// Define the type for the images
+interface Image {
+  url: string; // Define the properties based on the API response structure
+}
 
-// Define the type for the API response based on its structure
 interface PinterestVideo {
   title: string;
   videoUrl: string;
-  images: any; // Thumbnail or preview image
+  images: {
+    [key: string]: Image; // Use an index signature for dynamic keys like "474x"
+  };
 }
 
 interface PinterestApiResponse {
@@ -69,13 +73,13 @@ const FashionAnalysis: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
           {videos.map((video, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-lg">
-
               <img
-                src={video?.images["474x"].url}
+                src={video?.images["474x"]?.url} // Optional chaining for safety
                 alt={video.title}
                 className="w-full h-48 object-cover mb-4 rounded"
               />
               <h2 className="text-lg font-semibold mb-2">{video.title}</h2>
+              {/* Uncomment to enable the video link */}
               {/* <a
                 href={video.videoUrl}
                 target="_blank"
@@ -84,10 +88,6 @@ const FashionAnalysis: React.FC = () => {
               >
                 Watch Video
               </a> */}
-                {/* <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Video Stream</h1>
-      <VideoPlayer />
-    </div> */}
             </div>
           ))}
         </div>
