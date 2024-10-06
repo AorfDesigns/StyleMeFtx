@@ -31,12 +31,12 @@ const FashionAnalysis: React.FC = () => {
       url: 'https://unofficial-pinterest-api.p.rapidapi.com/pinterest/videos/relevance',
       params: {
         keyword: 'fashion', // Changed the keyword to "fashion"
-        num: '20'
+        num: '20',
       },
       headers: {
-        'x-rapidapi-key': '7e8f1fc79amshd1d2db34ab20267p1de4fbjsncb34daf0c555',
-        'x-rapidapi-host': 'unofficial-pinterest-api.p.rapidapi.com'
-      }
+        'x-rapidapi-key': 'YOUR_API_KEY', // Make sure to replace with your actual key
+        'x-rapidapi-host': 'unofficial-pinterest-api.p.rapidapi.com',
+      },
     };
 
     setLoading(true);
@@ -46,9 +46,14 @@ const FashionAnalysis: React.FC = () => {
       const response: AxiosResponse<PinterestApiResponse> = await axios.request(options);
       console.log(response.data); // Log the response data for debugging
       setVideos(response.data.data); // Store the video results
-    } catch (error: any) {
-      console.error(error);
-      setError('Failed to fetch Pinterest fashion videos.');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(error);
+        setError('Failed to fetch Pinterest fashion videos.');
+      } else {
+        console.error('Unexpected error:', error);
+        setError('An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
@@ -74,7 +79,7 @@ const FashionAnalysis: React.FC = () => {
           {videos.map((video, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-lg">
               <img
-                src={video?.images["474x"]?.url} // Optional chaining for safety
+                src={video.images["474x"]?.url} // Optional chaining for safety
                 alt={video.title}
                 className="w-full h-48 object-cover mb-4 rounded"
               />
