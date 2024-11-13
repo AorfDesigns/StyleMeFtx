@@ -1,4 +1,3 @@
-
 'use client'
 import React from 'react';
 import { FaRegComments } from 'react-icons/fa'; // Importing a message icon
@@ -8,7 +7,7 @@ import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/app/firebase/firebaseConfig';
 
-const Header: React.FC = () => {
+const Header2: React.FC = () => {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -36,22 +35,12 @@ const Header: React.FC = () => {
         {/* Menu list */}
         <ul className="hidden md:flex space-x-8 text-gray-700">
           <li>
-            <Link href="/dashboard" className="hover:text-[#FF6F61]" passHref>
+            <Link href="/dashboard2" className="hover:text-[#FF6F61]" passHref>
               Dashboard
             </Link>
           </li>
           <li>
-            <Link href="/measurement" className="hover:text-[#FF6F61]" passHref>
-              Measurements
-            </Link>
-          </li>
-          <li>
-            <Link href="/fashion" className="hover:text-[#FF6F61]">
-              Fashion Trends
-            </Link>
-          </li>
-          <li>
-            <Link href="/product" className="hover:text-[#FF6F61]" passHref>
+            <Link href="/product2" className="hover:text-[#FF6F61]" passHref>
               Products
             </Link>
           </li>
@@ -96,4 +85,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default Header2;

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { db, auth } from '@/app/firebase/firebaseConfig';
-import { signOut } from 'firebase/auth';
+
 import { useRouter } from 'next/navigation';
 
 export interface Measurement {
@@ -95,17 +95,10 @@ const MeasurementForm: React.FC<MeasurementFormProps> = ({ onSubmit }) => {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      router.push('/signin');
-    } catch (error) {
-      console.error('Error signing out: ', error);
-    }
-  };
+  
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-8 bg-white text-gray-800 rounded-lg shadow-xl transition-all duration-500 ease-in-out transform hover:shadow-2xl">
+    <div className="max-w-2xl mx-auto mt-10 p-8 bg-gray-100 text-gray-800 rounded-md shadow-xl transition-all duration-500 ease-in-out transform hover:shadow-2xl">
       {successMessage && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6">
           <strong className="font-bold">Success! </strong>
@@ -113,7 +106,7 @@ const MeasurementForm: React.FC<MeasurementFormProps> = ({ onSubmit }) => {
         </div>
       )}
 
-      <h2 className="text-3xl font-extrabold text-center mb-8">Client Measurement Form</h2>
+      <h2 className="text-3xl font-extrabold text-center mb-8 text-[#FF6F61]">Client Measurement Form</h2>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="space-y-2">
@@ -172,29 +165,25 @@ const MeasurementForm: React.FC<MeasurementFormProps> = ({ onSubmit }) => {
               </button>
             </div>
           ))}
+          <div className='flex justify-center'>
           <button
             type="button"
             onClick={addMeasurementField}
-            className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mt-4 transition-all"
+            className="w-96 py-4 px-4 bg-black text-white rounded-full hover:bg-[#FF6F61] mt-4 transition-all"
           >
             Add Measurement
           </button>
+          </div>
         </div>
-
+       <div className='flex justify-center'>
         <button
           type="submit"
-          className="w-full py-4 bg-black text-white font-bold rounded-lg hover:bg-green-600 transition-all duration-300"
+          className="w-96 py-4 bg-black text-white font-bold rounded-full hover:bg-[#FF6F61] transition-all duration-300"
         >
           Submit Measurements
         </button>
+        </div>
       </form>
-
-      <button
-        onClick={handleSignOut}
-        className="w-full py-4 mt-6 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 transition-all duration-300"
-      >
-        Sign Out
-      </button>
     </div>
   );
 };

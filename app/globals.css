@@ -23,3 +23,40 @@ body {
     text-wrap: balance;
   }
 }
+/* Add this to your global CSS file or Tailwind CSS styles */
+/* styles.css or your CSS file */
+.bg-tiled-background {
+  position: relative; /* Make this container relative for absolute positioning of overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Prevent overflow if images are larger */
+}
+
+.bg-tiled-background img {
+  position: absolute; /* Position images absolutely */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the full width */
+  height: 100%; /* Cover the full height */
+  object-fit: cover; /* Ensure images cover without stretching */
+}
+
+.overlay {
+  position: absolute; /* Overlay should be absolute to cover the images */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+  z-index: 1; /* Ensure overlay is on top of images */
+}
+
+.sign-in-container {
+  position: relative; /* Position this relative to allow z-index to work */
+  z-index: 2; /* Place this above the overlay */
+}
+
+
