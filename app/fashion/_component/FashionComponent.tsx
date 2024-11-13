@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import Image from 'next/image';
 
 // Define the type for the images
 interface Image {
@@ -78,7 +79,7 @@ const FashionAnalysis: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
           {videos.map((video, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-lg">
-              <img
+              <Image
                 src={video.images["474x"]?.url} // Optional chaining for safety
                 alt={video.title}
                 className="w-full h-48 object-cover mb-4 rounded"

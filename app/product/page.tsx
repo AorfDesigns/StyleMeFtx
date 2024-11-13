@@ -1,5 +1,4 @@
 import React from 'react'
-import Product from './_components/Product'
 import AppLayout from '../Applayout'
 import ManufacturerProduct from './_components/Product'
 
