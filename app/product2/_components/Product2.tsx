@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const ManufacturerProduct = () => {
@@ -106,7 +107,7 @@ const ManufacturerProduct = () => {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6'>
         {products.map(product => (
           <div key={product.id} className='bg-white rounded-lg shadow-md overflow-hidden'>
-            <img
+            <Image
               src={product.imageUrl}
               alt={product.name}
               className='w-full h-48 object-cover'
